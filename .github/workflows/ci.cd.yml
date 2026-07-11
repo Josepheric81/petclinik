@@ -274,15 +274,14 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
  
-      - name: Scan image with Trivy
+      - name: Scan Docker Image
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: |
-            ${{ steps.login-ecr.outputs.registry }}/\
-            ${{ env.ECR_REPOSITORY }}:${{ github.sha }}
-          format: table
-          exit-code: '0'
-          severity: CRITICAL,HIGH
+         image-ref: 982733204386.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+         format: table
+         exit-code: '1'
+         ignore-unfixed: true
+         severity: CRITICAL,HIGH
  
  deploy-ecs:
     name: Deploy to ECS
